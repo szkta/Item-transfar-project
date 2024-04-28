@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+    }
+    select, button {
+        font-size: 30px;
+        line-height: 1.5em;
+    }
+    #information div {
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1.5em;
+    }
+    #information .input {
+        font-size: 40px;
+        font-weight: bold;
+        line-height: 1.5em;
+    }
+    /* ロード画面のスタイル */
+    .loader {
+        border: 16px solid #f3f3f3; /* ローディング アニメーションのボーダー */
+        border-top: 16px solid #3498db; /* トップの青い色を示す */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite; /* アニメーションのスピン */
+        margin: auto; /* 中央揃え */
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    /* スピンのアニメーション */
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* ロード画面の背景スタイル */
+    .overlay {
+        background-color: rgba(0, 0, 0, 0.9); /* 半透明の黒背景 */
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 999; /* 他の要素よりも前面に表示 */
+    }
+@media screen and (max-width:480px) {
+
+	/*　画面サイズが480px以下の場合ここの記述が適用される　*/
+
+
+}
+
+
+</style>
+    <script>
+
+      function preventFormSubmit() {
+        var forms = document.querySelectorAll('form');
+        for (var i = 0; i < forms.length; i++) {
+          forms[i].addEventListener('submit', function(event) {
+            event.preventDefault();
+          });
+        }
+        //.gs内のloading()を呼び出し、読み込み後にListBack()でselect要素に選択肢を設定します。
+        google.script.run.withSuccessHandler(ListBack).loading(); 
+      }
+
+      window.addEventListener('load', preventFormSubmit);
+
+      //フォームなのでsubmit後の挙動を書く関数（今回は省略）
+      function handleFormSubmit(formObject) {
+        var div = document.getElementById('output');
+        div.innerHTML = "送信完了";
+      }
+
+      //リスト読み込み
+      function ListBack(data) {
+        //他関数でも読めるようにグローバル変数としてセット
+        listdata = data;
+        var list = document.getElementById('list');
+        for (var i=0; i<data.length; i++){
+          var option = document.createElement('option');
+          option.setAttribute('value', data[i][0]);
+          option.innerHTML = data[i][0];
+          list.appendChild(option);
+        }
+      }
+
+      //動的にリスト情報を表示
+      function addElement(select) {
+
+            //該当行を探すためのforループ。iで保持します。
+            for(var i=0; i<listdata.length; i++){
+                if(select.value ==listdata[i][0]){
+                    break;
+                }
+            }
+            var element = document.createElement('div'); 
+            var obj = document.getElementById("information"); 
+            var division = obj.getElementsByTagName('div');
+            //例えばAさん→Bさんと選択を変えたときにdiv内にAさんの情報が残らないようにする
+
+            if(division.length > 0){
+                obj.removeChild(division[0]);
+            }
+
+            element.class = "information"; 
+            element.innerHTML =  "物品名：" + listdata[i][1] + "<br>保管場所：" + listdata[i][2] + "<br>搬入先：" + listdata[i][3] + "<br>使用団体/場所：" + listdata[i][4] + "<br>責任者：" + listdata[i][5];
+            obj.appendChild(element);
+      }
+    // 5秒後にロード画面を非表示にする
+    setTimeout(function() {
+        var overlay = document.querySelector('.overlay');
+        overlay.style.display = 'none';
+    }, 4000);
+    </script>
+  </head>
+  <body>
+<div class="overlay">
+    <div class="loader"></div>
+</div>
+    <form>
+        <div id="information">
+          <select id="list" name="list" onchange="addElement(this);" required><br>
+          <option value=""></option>
+          </select>
+          <input type="text" id="inputBox" autocapitalize="characters">
+          <button onclick="setSelectBoxValue()">Set Value</button>
+        </div>
+    </form>
+<script>
+    function setSelectBoxValue() {
+        var inputText = document.getElementById("inputBox").value;
+        var selectBox = document.getElementById("list");
+        var options = selectBox.options;
+        
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].text === inputText) {
+                selectBox.selectedIndex = i;
+                break;
+            }
+        }
+    }
+</script>
+  </body>
+</html>
