@@ -4,6 +4,7 @@
     <base target="_top">
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- サイトのデザインをしています -->
 <style>
     body {
         display: flex;
@@ -64,6 +65,7 @@
 
 
 </style>
+<!-- サイトのプログラム -->
     <script>
 
       function preventFormSubmit() {
@@ -115,7 +117,7 @@
             if(division.length > 0){
                 obj.removeChild(division[0]);
             }
-
+            //[1]で２列目の値、[2]で３列目の値を取得
             element.class = "information"; 
             element.innerHTML =  "物品名：" + listdata[i][1] + "<br>保管場所：" + listdata[i][2] + "<br>搬入先：" + listdata[i][3] + "<br>使用団体/場所：" + listdata[i][4] + "<br>責任者：" + listdata[i][5];
             obj.appendChild(element);
@@ -124,10 +126,11 @@
     setTimeout(function() {
         var overlay = document.querySelector('.overlay');
         overlay.style.display = 'none';
-    }, 4000);
+    }, 5000);
     </script>
   </head>
   <body>
+    <!-- データを読みこむまで操作できないようにするためのロード画面 -->
 <div class="overlay">
     <div class="loader"></div>
 </div>
