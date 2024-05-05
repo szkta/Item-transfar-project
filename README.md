@@ -202,4 +202,9 @@
 =VLOOKUP(VLOOKUP(MAXIFS(Data!$A:$A,Data!$B:$B,"搬出",Data!$C:$C,B1),Data!$A:$D,4,false),Database!$A$2:$C,3,false)
 ```
 
+# おわりに
+不明点等あれば気軽に連絡ください。説明します。
+
+[Twitter(X)](https://twitter.com/52kta)までDMをお送りいただければすぐ答えます。よろしくお願いします。
+
 第７７回縣陵祭 総務課物品移動係 鈴木
