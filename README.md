@@ -21,76 +21,185 @@
 専用サイトのURLは「デプロイ」→「デプロイを管理」からも確認できます。
 
 # スプレッドシートがうまく機能しなくなったときは
-以下にシートごとの使用関数と説明を載せるので、指示に従って書き換えてください。
+以下にシートごとの使用関数を載せるので、書き換えてください。
+
+すべて２行目のデータを表示しています
 
 ## Databaseシート
 ### C列
 ```
 =IFERROR(VLOOKUP(MAXIFS(Data!$A:$A,Data!$B:$B,"登録",Data!$D:$D,A2),Data!$A:$D,3,false),"存在しません")
 ```
-DataシートのA列に時刻が入っているので、登録した物品かつA2（生徒用椅子）の値の中から一番新しいものを探し、記録されたデータの３列目（保管場所）を表示させる。
-もしこのコードが使われていないなら存在しませんを表示。
 
 ### D列
 ```
 =IFERROR(VLOOKUP(MAXIFS(Data!$A:$A,Data!$B:$B,"搬入",Data!$D:$D,A2),Data!$A:$D,3,false),"移動していません")
 ```
-DataシートのA列に時刻が入っているので、搬入した物品かつA2（生徒用椅子）の値の中から一番新しいものを探し、記録されたデータの３列目（搬入場所）を表示させる
 
 ### E列
 ```
 =IFERROR(VLOOKUP(MAXIFS(Data!$A:$A,Data!$B:$B,"貸出",Data!$D:$D,A2),Data!$A:$D,3,false),"貸し出していません")
 ```
-DataシートのA列に時刻が入っているので、貸出した物品かつA2（生徒用椅子）の値の中から一番新しいものを探し、記録されたデータの３列目（貸出団体）を表示させる
 
 ### F列
 ```
 =IFERROR(VLOOKUP(E2,'責任者'!$A$1:$B$20,2,FALSE),"貸し出していません")
 ```
-E列の値から責任者を検索して表示する。
 
 ### G列
 ```
 =IFERROR(IFS(VLOOKUP(MAXIFS(Data!$A:$A,Data!$D:$D,A2),Data!$A:$D,2,false)="貸出","未返却",VLOOKUP(MAXIFS(Data!$A:$A,Data!$D:$D,A2),Data!$A:$D,2,false)="返却","返却済み"),"貸し出していません")
 ```
-DataシートのA列に時刻が入っているので、貸出した物品かつA2（生徒用椅子）の値の中から一番新しいものを探し、それが「貸出」であったら「未返却」とし、「返却」だったら「返却済み」、それ以外なら「貸し出していません」と表示。
-
 
 ## Datatabeシート
 ### B列
 ```
 =Data!A1
 ```
-DataシートのA1を表示
 
 ### C列
 ```
 =Data!B1
 ```
-DataシートのB1を表示
 
 ### D列
 ```
 =Data!C1
 ```
-DataシートのC1を表示
 
 ### E列
 ```
 =Data!D1
 ```
-DataシートのD1を表示
 
 ### F列
 ```
 =iferror(IFS(COUNTIF($E2,"C*")=1,"生徒用椅子",COUNTIF($E2,"D*")=1,"生徒用机",COUNTIF($E2,"E*")=1,"教卓",COUNTIF($E2,"F*")=1,"パイプ椅子",COUNTIF($E2,"G*")=1,"長机"),"")
 ```
-E列の物品コードがCで始まるなら「生徒用椅子」、Dで始まるなら「生徒用机」...のようにしている。
 
 ### G列
 ```
 =IFERROR(VLOOKUP($E2,Database!$A:$D,3,FALSE()),"")
 ```
-E列の物品が元々どこにあったかを表示する。
+
+## 各教室備品数
+### B列
+```
+=COUNTIFS(Data!$C:$C,$A2,Data!$D:$D,"D*",Data!$B:$B, "登録")
+```
+
+### C列
+```
+=COUNTIFS(Data!$C:$C,$A2,Data!$D:$D,"C*",Data!$B:$B, "登録")
+```
+
+## モニター
+### B列
+```
+=COUNTIFS(Data!$C:$C,$A2,Data!$D:$D,"D*")
+```
+
+### C列
+```
+=COUNTIFS(Data!$C:$C,$A2,Data!$D:$D,"C*")
+```
+
+### D列
+```
+=COUNTIF(Data!$C:$C,$A2)-B2-C2
+```
+
+### G列
+```
+=$E2-$B2
+```
+
+### H列
+```
+=$F2-$C2
+```
+
+### J列
+```
+=COUNTIFS(Data!$B:$B,"搬入",Data!$C:$C,$I2,Data!$D:$D, "D*")
+```
+
+### K列
+```
+=COUNTIFS(Data!$B:$B,"搬入",Data!$C:$C,$I2,Data!$D:$D, "C*")
+```
+
+### L列
+```
+=COUNTIFS(Data!$B:$B,"搬入",Data!$C:$C,$I2)-J2-K2
+```
+
+### O列
+```
+=$M2-$J2
+```
+
+### P列
+```
+=$N2-$K2
+```
+
+## 各教室からの持ち出し数
+### B列
+```
+=COUNTIFS(Datatable!$G:$G,$A2,Datatable!$F:$F,"生徒用机",Datatable!$B:$B, "搬入")
+```
+
+### C列
+```
+=COUNTIFS(Datatable!$G:$G,$A2,Datatable!$F:$F,"生徒用椅子",Datatable!$C:$C, "搬入")
+```
+
+### D列
+```
+=COUNTIFS(Datatable!$G:$G,$A2,Datatable!$C:$C, "搬入")-B2-C2
+```
+
+### G列
+```
+=$E2-$B2
+```
+
+### H列
+```
+=$F2-$C2
+```
+
+### J列
+```
+=COUNTIFS(Datatable!$G:$G,$A2,Datatable!$F:$F,"生徒用机",Datatable!$D:$D, "搬出")
+```
+
+### K列
+```
+=COUNTIFS(Datatable!$G:$G,$A2,Datatable!$F:$F,"生徒用机",Datatable!$D:$D, "搬出")
+```
+
+### L列
+```
+=COUNTIFS(Datatable!$G:$G,$A2,Datatable!$D:$D, "搬出")-J2-K2
+```
+
+### O列
+```
+=$M2-$J2
+```
+
+### P列
+```
+=$N2-$K2
+```
+
+## Katazuke
+
+### B列
+```
+=VLOOKUP(VLOOKUP(MAXIFS(Data!$A:$A,Data!$B:$B,"搬出",Data!$C:$C,B1),Data!$A:$D,4,false),Database!$A$2:$C,3,false)
+```
 
 第７７回縣陵祭 総務課物品移動係 鈴木
