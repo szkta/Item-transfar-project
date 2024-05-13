@@ -3,26 +3,50 @@
   <head>
     <base target="_top">
     <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- サイトのデザインをしています -->
-<style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- サイトのデザインをしています -->
+    <style>
     body {
         display: flex;
-        justify-content: center;
+        min-height: 100vh;
+        font-family: "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", sans-serif;
     }
-    select, button {
+    .main {
+        display:flex;
+        flex-flow: column;
+        border:2px #ccc solid;
+        height:auto;
+        margin:0 0 1em;
+    }
+    form {
+        background-color: #eee;
+        text-align: center;
+        margin: 0 0 0 auto;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      height: 5vh;
+      max-height: 100px;
+    }
+    #information div{
+        font-size: 8vw;
+        font-weight: bold;
+        line-height: 1.5em;
+    }
+    #inputBox, #list {
         font-size: 30px;
-        line-height: 1.5em;
-    }
-    #information div {
-        font-size: 20px;
         font-weight: bold;
         line-height: 1.5em;
+        width: 6em;
+        box-sizing: border-box;
     }
-    #information .input {
-        font-size: 40px;
-        font-weight: bold;
-        line-height: 1.5em;
+    #reader {
+        justify-content: center;
+        font-size: 10px;
+        width: 30%;
+        height: 30%;
+        margin: auto;
     }
     /* ロード画面のスタイル */
     .loader {
@@ -56,15 +80,31 @@
         right: 0;
         z-index: 999; /* 他の要素よりも前面に表示 */
     }
-@media screen and (max-width:480px) {
 
-	/*　画面サイズが480px以下の場合ここの記述が適用される　*/
-
-
+/* 下はスマホ以外の時に適用されます */
+@media screen and (min-width: 480px) {
+    #information div{
+        font-size: 2vw;
+        font-weight: bold;
+        line-height: 1.5em;
+    }
+    body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        justify-content: center;
+        font-family: "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", sans-serif;
+    }
+    form {
+        flex: 1;
+        background-color: #eee;
+        text-align: center;
+        margin-left: 10px;
+    }
 }
 
-
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- サイトのプログラム -->
     <script>
 
@@ -130,32 +170,46 @@
     </script>
   </head>
   <body>
+      <h1>物品検索</h1>
     <!-- データを読みこむまで操作できないようにするためのロード画面 -->
 <div class="overlay">
     <div class="loader"></div>
 </div>
+
+<br>
+<div class="main">
+  <div id="reader"></div>
     <form>
         <div id="information">
-          <select id="list" name="list" onchange="addElement(this);" required><br>
+          <select id="list" name="list" onchange="addElement(this);"><br>
           <option value=""></option>
           </select>
-          <input type="text" id="inputBox" autocapitalize="characters">
-          <button onclick="setSelectBoxValue()">Set Value</button>
+          <input type="text" id="inputBox" autocapitalize="characters" onchange="addElement(this);">
         </div>
     </form>
+</div>
+<!-- QRコードリーダーが入る部分 -->
+<script src="https://unpkg.com/html5-qrcode"></script>
 <script>
-    function setSelectBoxValue() {
-        var inputText = document.getElementById("inputBox").value;
-        var selectBox = document.getElementById("list");
-        var options = selectBox.options;
-        
-        for (var i = 0; i < options.length; i++) {
-            if (options[i].text === inputText) {
-                selectBox.selectedIndex = i;
-                break;
-            }
-        }
-    }
-</script>
+
+let CURRENT_TEXT = '';
+
+const onScanSuccess = (decodedText, decodedResult) => {
+  console.log('onScanSuccess', decodedText, CURRENT_TEXT);
+  if (CURRENT_TEXT !== decodedText) {
+    CURRENT_TEXT = decodedText;
+    // 入力ボックスに値を設定
+    const inputBox = document.getElementById("inputBox");
+    inputBox.value = CURRENT_TEXT;
+    // addElementを実行
+    addElement(inputBox);
+  }
+};
+
+
+// QRコードリーダーの設定
+const html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 240 });
+html5QrcodeScanner.render(onScanSuccess);
+  </script>
   </body>
 </html>
