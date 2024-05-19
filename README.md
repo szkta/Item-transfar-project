@@ -3,8 +3,9 @@
 SpreadsheetApp.openById('-------------------');
 ```
 というコードで、---------------となっているところにスプレッドシートのURLをそのまま入力しても動きません。
-指定されたスプレッドシートのIDと呼ばれる部分を入力してください。
-![image](https://github.com/szkta/Item-transfar-project/assets/124339287/7f6c10d4-9c18-481a-a0ff-4dcd0154a56b)
+指定されたスプレッドシートのIDと呼ばれる部分を入力してください。（下の画像の下線部）
+![image](https://github.com/szkta/Item-transfar-project/assets/124339287/8eb5adf9-2b96-4ed6-9405-f0c330f54435)
+
 
 
 # サイトが動作しなくなったときは
