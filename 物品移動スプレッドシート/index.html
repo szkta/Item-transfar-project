@@ -39,8 +39,6 @@
     <button id="sound">Sound ON (iOS)</button>
     <!-- 読み取った番号を消すボタン -->
     <button id="reset-button">表示リセット</button>
-    <!-- スプレッドシートの内容を消すボタン -->
-    <button onclick="deleteData()">【警告】データ削除</button>
     <!-- 記録されるシートを表示 -->
     <p>これで読み取ったＱＲコードは<br><strong class="name">物品管理シート</strong>に登録されます</p>
 
@@ -66,16 +64,6 @@
     <script src="https://unpkg.com/html5-qrcode"></script>
 <!-- 以下はシステムに利用するプログラム -->
 <script>
-// シートの内容を消すプログラム
-  function deleteData() {
-    var response = confirm("本当にデータを削除しますか？");
-    if (response == true) {
-      google.script.run.deleteData();
-      alert("データが削除されました。");
-    } else {
-      alert("データ削除がキャンセルされました。");
-    }
-  }
 
     // リセットボタンをクリックしたときの処理
   document.getElementById('reset-button').addEventListener('click', function() {
