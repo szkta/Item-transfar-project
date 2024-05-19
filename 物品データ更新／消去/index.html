@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <style type="text/css">
+    body {
+        font-family: "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", sans-serif;
+        
+    }
+    #btn {
+        display: flex; /* 要素をフレックスボックスレイアウトにする */
+        flex-direction: column; /* 要素を縦方向に並べる */
+        align-items: center; /* 要素を横方向に中央揃えにする */
+        justify-content: center; /* 要素を縦方向に中央揃えにする */
+        
+    }
+
+    button.AddData{
+        display:inline-block;
+        background:none;
+        width: 90%;
+        height: 2.5em;
+        padding:10px 20px;
+        text-align:center;
+        color:#35bbbb;
+        font-size: 2em;
+        font-weight: bold;
+        margin:10px;
+        border:3px solid #35bbbb;
+        cursor:pointer;
+        }
+
+    button.DeleteData{
+        display:inline-block;
+        background:none;
+        width: 90%;
+        height: 2.5em;
+        padding:10px 30px;
+        text-align:center;
+        color:#d13415;
+        font-size: 1.5em;
+        font-weight: bold;
+        margin:10px;
+        border:3px solid #d13415;
+        cursor:pointer;
+        }
+@media screen and (min-width: 481px) {
+	/* 481px以上に適用されるCSS（タブレット用） */
+        button.AddData{
+        font-size: 2em;
+        }
+        button.DeleteData{
+        font-size: 2em;
+        }
+
+}
+@media screen and (min-width: 960px) {
+	/* 960px以上に適用されるCSS（PC用） */
+        button.AddData{
+        font-size: 4em;
+        width: 50%
+        }
+        button.DeleteData{
+        font-size: 4em;
+        width: 50%
+        }
+}
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div id="btn">
+        <button onclick="appendDataFromAllSheet()" class="AddData">データ更新</button>
+        <button onclick="clearAllData()" class="DeleteData">全データ削除</button>
+        <button onclick="clearDataof_3tou1kai()" class="DeleteData">3棟1階データ削除</button>
+        <button onclick="clearDataof_311room()" class="DeleteData">311データ削除</button>
+        <button onclick="clearDataof_LLroom()" class="DeleteData">LL教室データ削除</button>
+        <button onclick="clearDataof_Pilotis()" class="DeleteData">ピロティデータ削除</button>
+        <button onclick="clearDataof_Matome()" class="DeleteData">まとめシートデータ削除</button>
+    </div>
+<script>
+
+  function appendDataFromAllSheet() {
+    var response = confirm("全データを取得しなおします");
+    if (response == true) {
+      google.script.run.appendDataFromAllSheet();
+      alert("データが取得されました。");
+    } else {
+      alert("データ取得がキャンセルされました。");
+    }
+  }
+
+  function clearAllData() {
+    var response = confirm("本当にすべてのデータを削除しますか？");
+    if (response == true) {
+      google.script.run.clearAllData();
+      alert("データが削除されました。");
+    } else {
+      alert("データ削除がキャンセルされました。");
+    }
+  }
+
+  function clearDataof_3tou1kai() {
+    var response = confirm("本当にデータを削除しますか？");
+    if (response == true) {
+      google.script.run.clearDataof_3tou1kai();
+      alert("データが削除されました。");
+    } else {
+      alert("データ削除がキャンセルされました。");
+    }
+  }
+
+  function clearDataof_311room() {
+    var response = confirm("本当にデータを削除しますか？");
+    if (response == true) {
+      google.script.run.clearDataof_311room();
+      alert("データが削除されました。");
+    } else {
+      alert("データ削除がキャンセルされました。");
+    }
+  }
+
+  function clearDataof_LLroom() {
+    var response = confirm("本当にデータを削除しますか？");
+    if (response == true) {
+      google.script.run.clearDataof_LLroom();
+      alert("データが削除されました。");
+    } else {
+      alert("データ削除がキャンセルされました。");
+    }
+  }
+
+  function clearDataof_Pilotis() {
+    var response = confirm("本当にデータを削除しますか？");
+    if (response == true) {
+      google.script.run.clearDataof_Pilotis();
+      alert("データが削除されました。");
+    } else {
+      alert("データ削除がキャンセルされました。");
+    }
+  }
+
+  function clearDataof_Matome() {
+    var response = confirm("本当にデータを削除しますか？");
+    if (response == true) {
+      google.script.run.clearDataof_Matome();
+      alert("データが削除されました。");
+    } else {
+      alert("データ削除がキャンセルされました。");
+    }
+  }
+
+</script>
+</body>
+</html>
